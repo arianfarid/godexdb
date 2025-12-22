@@ -21,10 +21,23 @@ func main() {
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print(">")
-		input, err := reader.ReadString(';')
+		raw, err := reader.ReadString(';')
 		if err != nil {
 			log.Fatal("Syntax error: ", err)
 		}
-		fmt.Printf("%s\n", input)
+
+
+		input := db.ParseInput(raw)
+		switch input.Type {
+		case db.InputEmpty:
+			continue
+		case db.InputMeta:
+			if input.Meta.Type == db.MetaCommandQuit {
+				return
+			}
+		case db.InputSQL:
+			fmt.Println("SQL:", input.SQL)
+		}
+		
 	}
 }

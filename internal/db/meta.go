@@ -3,11 +3,11 @@ package db
 import "strings"
 
 type MetaCommand struct {
-	Kind MetaCommandKind
+	Type MetaCommandType
 	Raw string
 }
-type MetaCommandKind int
-func (k MetaCommandKind) String() string {
+type MetaCommandType int
+func (k MetaCommandType) String() string {
 	switch k {
 	case MetaCommandQuit:
 		return "quit"
@@ -16,7 +16,7 @@ func (k MetaCommandKind) String() string {
 	}
 }
 const (
-	MetaCommandUnknown MetaCommandKind = iota
+	MetaCommandUnknown MetaCommandType = iota
 	MetaCommandQuit
 )
 
@@ -24,13 +24,13 @@ func ParseMeta(input string) MetaCommand {
 	raw := strings.TrimSpace(input)
 	if raw == "" {
 		return MetaCommand{
-			Kind: MetaCommandUnknown,
+			Type: MetaCommandUnknown,
 			Raw: input,
 		}
 	}
 	if raw[0] != '.' {
 		return MetaCommand{
-			Kind: MetaCommandUnknown,
+			Type: MetaCommandUnknown,
 			Raw: input,
 		}
 	}
@@ -38,12 +38,12 @@ func ParseMeta(input string) MetaCommand {
 	switch raw {
 	case ".quit", ".exit":
 		return MetaCommand{
-			Kind: MetaCommandQuit,
+			Type: MetaCommandQuit,
 			Raw: raw,
 		}
 	default: 
 		return MetaCommand{
-			Kind: MetaCommandUnknown,
+			Type: MetaCommandUnknown,
 			Raw: input,
 		}
 	}
