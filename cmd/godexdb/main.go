@@ -6,28 +6,18 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"github.com/arianfarid/godexdb/internal/db"
 )
 
-type Conn struct {
-	file *os.File
-}
- 
 func main() {
 
 	//args := os.Args
 	dbPointer := flag.String("db", "./test.db", "Location of the db file.")
 	flag.Parse()
 
+	var connection db.Conn
+	connection.Connect(*dbPointer)
 
-	fmt.Println(*dbPointer)
-	file, err := os.OpenFile(*dbPointer, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatal("Error connecting to database:", err)
-	}
-	var connection = Conn {
-		file,
-	}
-	fmt.Println(connection)
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print(">")
