@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
+
 	"github.com/arianfarid/godexdb/internal/db"
 )
 
@@ -36,7 +38,16 @@ func main() {
 				return
 			}
 		case db.InputSQL:
+			
+			vals := strings.Split(input.SQL, " ")
+			first := strings.ToLower(vals[0])
+
+			statement := db.ParseStatemnt(first)
+				
 			fmt.Println("SQL:", input.SQL)
+			fmt.Println("Statment:", statement)
+
+			 
 		}
 		
 	}
